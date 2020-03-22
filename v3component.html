@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <style>
+        .img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        h1{
+            font-size: 20px;
+            color: rgba(64, 30, 255, 0.205);
+        }
+        
+
+        .block {
+            display: flex;
+            text-align: right;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        .text {
+            font-size: 16px;
+            color: black;
+        }
+
+        .block1 {
+            margin-top: 10px;
+            width: 500px;
+            text-align: center;
+
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid darkgrey;
+            width: 500px;
+            background-color: limegreen;
+            margin: 0 auto;
+        }
+
+        .img1 {
+            width: 400px;
+            height: 250px;
+        }
+
+        .button{
+            text-align: right;
+        }
+
+    </style>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const {Fragment} = React;
+
+        // DATA
+
+        let loaded = false;
+
+        const post1 = {
+            authorName: "Maria Negrych",
+            data: "17.02.2020",
+            mood: "почувається натхненно",
+            imgAuthor: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Colorful_spring_garden.jpg/1200px-Colorful_spring_garden.jpg",
+            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo maxime alias, saepe veniam delectus dolor vitae magnam nam vero possimus reprehenderit ab facilis est laboriosam culpa minus aliquid dolorem quam?",
+            imgPost: null
+        };
+
+        const post2 = {
+            authorName: "Maria Negrych",
+            data: "15.02.2020",
+            mood: "почувається вмотивовано",
+            imgAuthor: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Colorful_spring_garden.jpg/1200px-Colorful_spring_garden.jpg",
+            text: "Spring is comming",
+            imgPost: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Colorful_spring_garden.jpg/1200px-Colorful_spring_garden.jpg"
+        };
+
+        let post1IsClosed = false;
+
+        let post2IsClosed = false;
+
+        // UI;
+
+        const PostImage = props => {
+            const {src} = props;
+            return src && <img src={src} className ="img1"></img>;
+        }
+
+        const Post = props => {
+            const {post, isClosed, onCloseRequest} = props;
+            return isClosed || (
+                <div className="main">
+                    <div className="block">
+                        <img src={post.imgAuthor} className="img"></img>
+                        <h1>{post.authorName}</h1>
+                        <p className="text"> {post.mood} </p>
+                        <small className="data">{post.data}</small>
+                    </div>
+
+                    <div className="block1">
+                        <p className="text">{post.text}</p>
+                        <PostImage src={post.imgPost} />
+                    </div>
+                    <div className="button"><button onClick={onCloseRequest}>Close</button></div>
+                </div>
+            );
+        };
+
+        const App = props => {
+            const { loaded, post1, post2, post1IsClosed, post2IsClosed, closePost1, closePost2}=props.data;
+            return loaded? (
+            <Fragment>
+                <Post post = {post1} isClosed={post1IsClosed} onCloseRequest={ closePost1 } />                    
+                <Post post = {post2} isClosed={post2IsClosed} onCloseRequest={ closePost2 } />                    
+            </Fragment>
+            ) : (
+                <div>Please wait, loading...</div>
+            );
+        };
+
+        function renderUI (){
+            ReactDOM.render(
+                <App data = {{loaded, post1, post2, post1IsClosed, post2IsClosed, closePost1, closePost2}}/>,
+                document.getElementById("root"));
+        };
+
+        // LOGIC;
+
+         renderUI();
+
+        const setLoaded = ()  => {
+            loaded = true;
+            renderUI();
+        };
+
+        const closePost1 = () => {
+            post1IsClosed = true;
+            renderUI();
+        };
+
+        const closePost2 = () => {
+            post2IsClosed = true;
+            renderUI();
+        };
+
+        setTimeout(setLoaded, 1000);
+    </script>
+
+</body>
+
+</html>

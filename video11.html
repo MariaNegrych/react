@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <style>
+        .img {
+            width: 30px;
+            height: 50px;
+        }
+
+        h1, h2{
+            font-size: 15px;
+            color: dodgerblue;
+        }
+
+        .block{
+            display:flex;
+        }
+
+        .text{
+            font-size: 12px;
+            color: black;
+        }
+
+        .block1{
+            margin-top: 10px;
+            width: 300px;
+           
+        }
+        .main{
+             border: 1px solid darkgrey;
+             width: 350px;
+             background-color: azure;
+        }
+        .img1{
+            width: 150px;
+            height: 200px;
+        }
+    </style>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const post1 = {
+            authorName: "Maria Negrych  ",
+            data: "17.02.2020",
+            imgAuthor: "IMG_0340.jpg",
+            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo maxime alias, saepe veniam delectus dolor vitae magnam nam vero possimus reprehenderit ab facilis est laboriosam culpa minus aliquid dolorem quam?",
+        };
+
+         const post2 = {
+                authorName: "  Maria Negrych",
+                data: "15.02.2020",
+                imgAuthor: "IMG_0340.jpg",
+                text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo maxime alias, saepe veniam delectus dolor vitae magnam nam vero possimus reprehenderit ab facilis est laboriosam culpa minus aliquid dolorem quam?",
+                imgPost: "IMG_03521.jpg"
+         };
+              
+       ReactDOM.render(
+           <div>
+               <div className="main">
+                   <div className="block">
+                       <img src={post1.imgAuthor} className="img"></img>
+                       <h1>{post1.authorName}</h1> 
+                       <p className="text"> is with </p>
+                       <h2>{ post1.authorName}</h2>
+                       <small>{post1.data}</small>
+                   </div>
+
+                   <div className="block1">
+                       <p>{post1.text}</p>
+                   </div>
+
+               </div>
+
+               <div className="main">
+                   <div className="block">
+                       <img src={post2.imgAuthor} className="img"></img>
+                       <h1>{post2.authorName}</h1>
+                       <p className="text"> is with </p>
+                       <h2>{ post2.authorName}</h2>
+                       <small>{post2.data}</small>
+                   </div>
+
+                   <div className="block1">
+                       <p>{post2.text}</p>
+                       <img src={post2.imgPost} className="img1"></img>
+                   </div>
+
+               </div>
+           </div>,
+           document.getElementById("root") 
+       );      
+    </script>
+
+</body>
+
+</html>

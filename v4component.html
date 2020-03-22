@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <style>
+        html, body, #root, .app-wrapper{
+            height: 100%;
+        }
+        .img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        h1{
+            font-size: 20px;
+            color: rgba(64, 30, 255, 0.205);
+        }
+        
+
+        .block {
+            display: flex;
+            text-align: right;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        .text {
+            font-size: 16px;
+            color: black;
+        }
+
+        .block1 {
+            margin-top: 10px;
+            width: 500px;
+            text-align: center;
+
+        }
+
+        .main{
+            display: flex;
+            flex-direction: column;
+            border: 1px solid darkgrey;
+            width: 500px;
+            background-color: rgba(0, 178, 255, 0.46);
+            margin: 0 auto;
+        }
+
+        .img1 {
+            width: 400px;
+            height: 250px;
+        }
+
+        .button{
+            text-align: right;
+        }
+        .buttonClosePost {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgb(156, 156, 156);
+            width: 500px;
+            background-color: rgba(0, 178, 255, 0.46);
+            margin: 0 auto;
+        }
+
+    </style>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const {Fragment} = React;
+
+        const POST1_SELECTED = Symbol();
+        const POST2_SELECTED = Symbol();
+        const NOTHING_SELECTED = Symbol();
+
+        // DATA
+
+        let loaded = false;
+
+        const post1 = {
+            authorName: "Maria Negrych",
+            data: "17.02.2020",
+            mood: "почувається натхненно",
+            imgAuthor: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Colorful_spring_garden.jpg/1200px-Colorful_spring_garden.jpg",
+            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo maxime alias, saepe veniam delectus dolor vitae magnam nam vero possimus reprehenderit ab facilis est laboriosam culpa minus aliquid dolorem quam?",
+            imgPost: null
+        };
+
+        const post2 = {
+            authorName: "Maria Negrych",
+            data: "15.02.2020",
+            mood: "почувається вмотивовано",
+            imgAuthor: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Colorful_spring_garden.jpg/1200px-Colorful_spring_garden.jpg",
+            text: "Spring is comming",
+            imgPost: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Colorful_spring_garden.jpg/1200px-Colorful_spring_garden.jpg"
+        };
+
+         const studentsList1 = [
+                { name: 'student A', id: 1 },
+                { name: 'student B', id: 2 },
+                { name: 'student C', id: 3 },
+                { name: 'student D', id: 4 },
+                { name: 'student E', id: 5 },
+                { name: 'student F', id: 6 },
+                { name: 'student G', id: 7 }
+
+            ];
+
+            const studentsList2 = [
+                { name: 'student E', id: 5 },
+                { name: 'student F', id: 6 },
+                { name: 'student G', id: 7 }
+            ];
+
+        let showFirstList = true;
+
+        let post1IsClosed = false;
+
+        let post2IsClosed = false;
+
+        let post1isActive = false;
+
+        let post2isActive = false;
+
+        let selectedPost = NOTHING_SELECTED;
+
+        // UI;
+
+        const PostImage = props => {
+            const {src} = props;
+            return src && <img src={src} className ="img1"></img>;
+        }
+
+        const Post = props => {
+            const {post, isClosed, isActive, isSelected, onCloseRequest, toggleisActive, selectPost} = props;
+            return isClosed || (
+                    <div className="main" 
+                            style = {{backgroundColor: isSelected? "red" : "lightgreen"}} 
+                            onClick={e => {e.stopPropagation(); selectPost();}}>
+                        <div className="block">
+                            <img src={post.imgAuthor} className="img"></img>
+                            <h1>{post.authorName}</h1>
+                            <p className="text"> {post.mood} </p>
+                            <small className="data">{post.data}</small>
+                        </div>
+
+                        <div className="block1">
+                            <p className="text">{post.text}</p>
+                            <PostImage src={post.imgPost} />
+                        </div>
+                        <div className="button">
+                            <span>Is active: {isActive ? "yes" : "no"}
+                                <button onClick={e => { e.stopPropagation(); toggleisActive(); }}>{isActive ? "Deactivate" : "Activate"}</button>
+                            </span>               
+                        </div>
+                    </div>              
+                );
+        };
+
+        const But = props => {
+                const {isClosed, onCloseRequest, isSelected } = props;
+                return  <div className="buttonClosePost">
+                    <button onClick={e => { e.stopPropagation(); onCloseRequest(); }} 
+                            style={{ backgroundColor: "green"}}>{isClosed ? "Open" : "Close"}
+                    </button>
+                    </div>;
+            };
+
+        function RenderStudentsList (props) {
+                const {list, onListButtonClick} = props; 
+                const studentEl = list.map(({ name, id }) => <li key={id}>{name}</li>);
+                return (
+                    <Fragment>
+                        <ol>{studentEl}</ol>
+                        <button onClick={onListButtonClick}>Switch list</button>
+                    </Fragment>
+                );
+            };
+        
+        const App = props => {
+            const { 
+                loaded, 
+                post1,
+                post2, 
+                post1IsClosed, 
+                post2IsClosed, 
+                closePost1, 
+                closePost2, 
+                post1isActive, 
+                post2isActive, 
+                selectedPost,
+                toggleActiveForPost1, 
+                toggleActiveForPost2,
+                selectPost1,
+                selectPost2,
+                deselectPost,
+                toggleList,
+                studentsList1,
+                studentsList2 ,
+                showFirstList
+                }=props.data;
+
+                const post1isSelected = selectedPost === POST1_SELECTED;
+                const post2isSelected = selectedPost === POST2_SELECTED;
+                
+               
+
+            return (<div className="app-wrapper" onClick={()=> {deselectPost();}}>
+                {loaded ? (
+                    <Fragment>
+                        <Post
+                            post={post1}
+                            isClosed={post1IsClosed}
+                            isActive={post1isActive}
+                            isSelected={post1isSelected}
+                            onCloseRequest={closePost1}
+                            toggleisActive={toggleActiveForPost1}
+                            selectPost={selectPost1} />
+
+                        <But  isClosed={post1IsClosed}
+                              onCloseRequest={closePost1}/>
+
+                        <Post
+                            post={post2}
+                            isClosed={post2IsClosed}
+                            isActive={post2isActive}
+                            isSelected={post2isSelected}
+                            onCloseRequest={closePost2}
+                            toggleisActive={toggleActiveForPost2}
+                            selectPost={selectPost2} />
+
+                        <But  isClosed={post2IsClosed}
+                              onCloseRequest={closePost2}/>
+
+                        <RenderStudentsList 
+                            list = {showFirstList ? studentsList1 : studentsList2}
+                            onListButtonClick = {toggleList}/>
+                    </Fragment>
+                    ) : (
+                        <div>Please wait, loading...</div>
+                    )}
+                    </div>
+                );
+            };
+
+        function renderUI (){
+            ReactDOM.render(
+                <App data = {{
+                    loaded,
+                    post1, 
+                    post2, 
+                    post1IsClosed,
+                    post2IsClosed, 
+                    closePost1, 
+                    closePost2,
+                    selectedPost,
+                    post1isActive, 
+                    post2isActive, 
+                    toggleActiveForPost1, 
+                    toggleActiveForPost2,
+                    selectPost1, 
+                    selectPost2,
+                    deselectPost,
+                    toggleList,
+                    studentsList1,
+                    studentsList2,
+                    showFirstList }}/>,
+                document.getElementById("root"));
+        };
+
+        // LOGIC;
+
+         renderUI();
+
+        const setLoaded = ()  => {
+            loaded = true;
+            renderUI();
+        };
+
+        const closePost1 = () => {
+            post1IsClosed = !post1IsClosed;
+            renderUI();
+        };
+
+        const closePost2 = () => {
+            post2IsClosed = !post2IsClosed;
+            renderUI();
+        };
+
+        const toggleActiveForPost1 = () => {
+            post1isActive = !post1isActive;
+            renderUI();
+        };
+
+        const toggleActiveForPost2 = () => {
+            post2isActive = !post2isActive;
+            renderUI();
+        };
+
+        const selectPost1 = () => {
+            selectedPost = POST1_SELECTED;
+            renderUI();
+        };
+
+        const selectPost2 = () => {
+            selectedPost = POST2_SELECTED;
+            renderUI();
+        };
+
+        const deselectPost = () => {
+            selectedPost = NOTHING_SELECTED;
+            renderUI();
+        };
+
+        const toggleList = ()=> {
+                showFirstList = !showFirstList;
+                renderUI();
+            }; 
+
+
+        // document.addEventListener('click', deselectPost);
+
+        setTimeout(setLoaded, 1000);
+    </script>
+
+</body>
+
+</html>

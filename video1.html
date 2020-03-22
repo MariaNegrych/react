@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <style>
+    .inactive{
+        height: 200px;
+        width: 200px;
+        background-color: aqua;
+
+    }
+    .active{
+        height: 200px;
+        width: 200px;
+        background-color: red;
+
+    }
+    .active1{
+        height: 200px;
+        width: 200px;
+        background-color: rgb(132, 0, 255);
+
+    }
+</style>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    const {Fragment} = React;
+
+    // LOGIC
+
+    // let studentIsActive = false;
+
+    // function toggleActive (){
+    //     studentIsActive = !studentIsActive;
+    // };
+
+    const studentsList1 = [
+        {name: 'student A', id :1},
+        {name: 'student B', id :2},
+        {name: 'student C', id :3},
+        {name: 'student D', id :4},
+        {name: 'student E', id :5},
+        {name: 'student F', id :6},
+        {name: 'student G', id :7}
+        
+    ];
+
+    const studentsList2 = [
+        { name: 'student E', id: 5 },
+        { name: 'student F', id: 6 },
+        { name: 'student G', id: 7 }
+        ];
+
+        let showFirstList = true;
+
+       function toggleList() {
+            showFirstList = !showFirstList;
+        }; 
+
+    // UI
+
+    function onStudentButtonClick (){
+        toggleActive();
+        updateUI();
+    };
+
+    // function renderInfo (){
+    //     return (
+    //         <Fragment>
+    //             <p>Студент активний: <code>{studentIsActive? "yes" : "no"}</code></p>
+    //             <button onClick = {onStudentButtonClick}>Змінити стан студента</button>
+    //         </Fragment>
+    //     );
+    // };
+
+    function onListButtonClick() {
+            toggleList();
+            updateUI();
+        };
+
+        function renderStudentsList() {
+            const list = showFirstList? studentsList1 : studentsList2;
+            const studentEl = list.map(({name, id}) => <li key = {id}>{name}</li>);
+                return (
+                    <Fragment>
+                        <ol>{studentEl}</ol>
+                        <button onClick={onListButtonClick}>Switch list</button>
+                    </Fragment>
+                );
+            };
+
+    function updateUI (){
+        ReactDOM.render(
+            <Fragment>
+                {/*<h1>My page</h1>
+                <p>HELLO!!!</p>*/}
+                {/*renderInfo()*/}
+                {renderStudentsList()}
+            </Fragment>,
+            document.getElementById('root')
+        );
+    };
+
+    updateUI();
+
+        // let isActive = false;
+
+        
+        // const renderMyApp = () =>{
+        //     ReactDOM.render((
+        //     isActive ? 
+        //     <div className = "active"></div>:<div className = "inactive"></div>),
+
+        //     document.getElementById('root')
+        // );
+        // };
+
+        // renderMyApp();
+
+        // root.addEventListener('click', () => {
+        //     isActive = !isActive;
+        //     renderMyApp();
+        // });
+
+
+        // ReactDOM.render(
+        //     <div className = "active1">
+        //         Hello, world! 
+        //         <span>1</span> 
+        //         <span>2</span> 
+        //         <span>3</span> 
+        //     </div>,
+        //     document.getElementById('root')
+        // );
+
+        // setTimeout(()=>{
+        //     ReactDOM.render(
+        //         <div className="active1">
+        //              Hello, world!
+        //             <span>1</span>
+        //             <span>9</span>
+        //             <span>3</span>
+        //             <span>7</span>
+        //             {/**()=>{console.log('22')}**/}
+        //         </div>,
+        //         document.getElementById('root')
+        //     );
+        // },1000);
+
+        // window.a = {
+        //     <h1 className = "active">
+        //             Hello, world!
+        //             <span>1</span>
+        //             <span>2</span>
+        //             <span>3</span> 
+        //     </h1>
+        // };
+
+    </script>
+    
+</body>
+
+</html>
